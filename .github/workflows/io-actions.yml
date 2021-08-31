@@ -21,15 +21,6 @@ jobs:
     # the head of the pull request instead of the merge commit.
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
-      
-    - name: Public IP
-      id: ip
-      uses: haythem/public-ip@v1.2
-
-    - name: Print Public IP
-      run: |
-        echo ${{ steps.ip.outputs.ipv4 }}
-        echo ${{ steps.ip.outputs.ipv6 }}
     
     #IO SETUP is required for devsecops persona. Can be ignored if onboarding is done through CURL or Postman 
     - name: IO Setup
