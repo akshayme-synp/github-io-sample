@@ -94,14 +94,8 @@
             "new",
             "open"
          ],
-         "overallseverity": [
-            "high"
-         ],
+         "overallseverity": [],
          "categories": [
-            {
-               "name": "cross-site scripting",
-               "severity": "high"
-            },
             {
                "name": "sql injection",
                "severity": "high"
