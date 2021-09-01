@@ -22,6 +22,7 @@ jobs:
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
     
+    #IP Address
     - name: Public IP
       id: ip
       uses: haythem/public-ip@v1.2
