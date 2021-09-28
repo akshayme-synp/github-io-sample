@@ -30,11 +30,12 @@ jobs:
           manifest_type: json
           asset_id: devsecops-test/github-io-sample
           calculator_meta_path: io_calculator_metadata.json
+          tpi_path: io-tpi.json
       run: |
           wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/${workflow_version}/io_onboarding.sh"
           sed -i -e 's/\r$//' io_onboarding.sh
           chmod +x io_onboarding.sh
-          ./io_onboarding.sh --io.url=${{secrets.IO_SERVER_URL}} --io.token=${{secrets.IO_SERVER_TOKEN}} --asset.id=$asset_id --calculator.meta.path=$calculator_meta_path --manifest.type=$manifest_type --workflow.version=$workflow_version
+          ./io_onboarding.sh --io.url=${{secrets.IO_SERVER_URL}} --io.token=${{secrets.IO_SERVER_TOKEN}} --asset.id=$asset_id --tpi.path=$tpi_path --calculator.meta.path=$calculator_meta_path --manifest.type=$manifest_type --workflow.version=$workflow_version
     
     - name: Synopsys Intelligent Security Scan
       id: prescription
