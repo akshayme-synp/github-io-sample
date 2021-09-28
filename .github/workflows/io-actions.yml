@@ -22,7 +22,6 @@ jobs:
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
     
-    
     #IO SETUP is required for devsecops persona. Can be ignored if onboarding is done through CURL or Postman 
     - name: IO Setup
       env:
