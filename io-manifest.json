@@ -1,7 +1,18 @@
 {
    "application": {
+      "appId": "devsecops-test/github-io-sample",
+      "assetId": "devsecops-test/github-io-sample",
       "projectName": "devsecops-test/github-io-sample",
-      "release": "<<RELEASE_TYPE>>"
+      "appType": "Webapp",
+      "release": "<<RELEASE_TYPE>>",
+      "microservice": false,
+      "projectLanguage": "Java",
+      "platformVersion": "Java 8",
+      "buildSystem": "Maven",
+      "riskMatrixRevision": "default",
+      "sourceFilePattern": ".*\\+\\+\\+.*(\\.java|\\.jsp)+.*",
+      "sensitivePackagePattern": "<<SENSITIVE_PACKAGE_PATTERN>>",
+      "fileChangeThreshold": "<<FILE_CHANGE_THRESHOLD>>"
    },
    "environment": {
       "scm": "<<SCM_TYPE>>",
