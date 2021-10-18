@@ -1,6 +1,7 @@
 {
    "application": {
-      "projectName": "devsecops-test/github-io-sample"
+      "projectName": "devsecops-test/github-io-sample",
+      "release": "<<RELEASE_TYPE>>"
    },
    "environment": {
       "scm": "<<SCM_TYPE>>",
