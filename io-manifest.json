@@ -9,7 +9,6 @@
       "projectLanguage": "Java",
       "platformVersion": "Java 8",
       "buildSystem": "Maven",
-      "riskMatrixRevision": "default",
       "sourceFilePattern": ".*\\+\\+\\+.*(\\.java|\\.jsp)+.*",
       "sensitivePackagePattern": "<<SENSITIVE_PACKAGE_PATTERN>>",
       "fileChangeThreshold": "<<FILE_CHANGE_THRESHOLD>>"
