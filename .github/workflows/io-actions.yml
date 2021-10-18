@@ -23,18 +23,18 @@ jobs:
       if: ${{ github.event_name == 'pull_request' }}
     
     #IO SETUP is required for devsecops persona. Can be ignored if onboarding is done through CURL or Postman 
-    - name: IO Setup
-      env:
-          workflow_version: 2021.10.0
-          manifest_type: json
-          asset_id: devsecops-test/github-io-sample
-          calculator_meta_path: io_calculator_metadata.json
-          tpi_path: io-tpi.json
-      run: |
-          wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/${workflow_version}/io_onboarding.sh"
-          sed -i -e 's/\r$//' io_onboarding.sh
-          chmod +x io_onboarding.sh
-          ./io_onboarding.sh --io.url=${{secrets.IO_SERVER_URL}} --io.token=${{secrets.IO_SERVER_TOKEN}} --asset.id=$asset_id --tpi.path=$tpi_path --calculator.meta.path=$calculator_meta_path --manifest.type=$manifest_type --workflow.version=$workflow_version
+    #- name: IO Setup
+    #  env:
+    #      workflow_version: 2021.10.0
+    #      manifest_type: json
+    #      asset_id: devsecops-test/github-io-sample
+    #      calculator_meta_path: io_calculator_metadata.json
+    #      tpi_path: io-tpi.json
+    #  run: |
+    #      wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/${workflow_version}/io_onboarding.sh"
+    #      sed -i -e 's/\r$//' io_onboarding.sh
+    #      chmod +x io_onboarding.sh
+    #      ./io_onboarding.sh --io.url=${{secrets.IO_SERVER_URL}} --io.token=${{secrets.IO_SERVER_TOKEN}} --asset.id=$asset_id --tpi.path=$tpi_path --calculator.meta.path=$calculator_meta_path --manifest.type=$manifest_type --workflow.version=$workflow_version
     
     - name: Synopsys Intelligent Security Scan
       id: prescription
