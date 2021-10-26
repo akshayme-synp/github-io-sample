@@ -42,7 +42,7 @@ jobs:
       id: prescription
       uses: synopsys-sig/intelligent-security-scan@2021.10.0
       env:
-        persona: devsecops
+        persona: developer
         release_type: minor
       with:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
@@ -77,7 +77,7 @@ jobs:
       if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
       uses: synopsys-sig/intelligent-security-scan@2021.10.0
       env:
-        persona: devsecops
+        persona: developer
         release_type: minor
       with:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
