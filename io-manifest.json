@@ -6,6 +6,7 @@
       "appType": "Webapp",
       "release": "<<RELEASE_TYPE>>",
       "microservice": false,
+      "riskMatrixRevision": "Rev1.0",
       "projectLanguage": "Java",
       "platformVersion": "Java 8",
       "buildSystem": "Maven",
