@@ -43,6 +43,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String token = (String) authentication.getCredentials();
 		password = "corona-virus";
 		System.out.println("Password" + password);
+		stem.out.println("username" + username);
 
 		List<Account> listAccounts = new ArrayList<>();
 		try {
