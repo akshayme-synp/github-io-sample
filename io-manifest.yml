@@ -63,7 +63,7 @@ tool_information:
   enabled: false
 - tool_name: "blackduck"
   fields:
-    project_name: "devsecops-test/github-io-sample"
+    project_name: "devsecops-test/github-io-sample:1.0"
     instance_url: "https://bizdevhub.blackducksoftware.com"
     auth_token: "<<BLACKDUCK_ACCESS_TOKEN>>"
   enabled: "<<IS_SCA_ENABLED>>"
