@@ -31,7 +31,7 @@ steps:
        echo "Trigger IO"
        wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0-alpha-2/prescription.sh"
        chmod +x prescription.sh
-       ./prescription.sh --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" \
+       ./prescription.sh --persona="major" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" \
         --asset.id="devsecops-test/github-io-sample" --scm.type="github" --scm.owner="devsecops-test" --scm.repo.name="github-io-sample" --scm.branch.name="master" \
         ${ADDITIONALARGS}
        export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
