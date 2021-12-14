@@ -14,6 +14,10 @@ variables:
   value: devsecops
 - name: MANIFEST_TYPE
   value: yml
+- name: BD_PROJECT_NAME
+  value: "devsecops-test/github-io-sample"
+- name: BLACKDUCK_PROJECT_VERSION
+  value: 1.0
 
 steps:
 - task: Bash@3
@@ -72,11 +76,30 @@ steps:
     targetType: 'inline'
     script: |
       # Write your commands here
+      if [ "$(IS_SAST_ENABLED)" = "x" ] || [ "$(IS_SAST_ENABLED)" = "false" ] || [ "$(IS_SAST_ENABLED)" = "null" ]; then
+          echo "SAST Scanning is disabled."
+          exit 0
+      fi
       export POLARIS_SERVER_URL=$(POLARIS_SERVER_URL)
       export POLARIS_ACCESS_TOKEN=$(POLARIS_ACCESS_TOKEN)
       wget -q $(POLARIS_SERVER_URL)/api/tools/polaris_cli-linux64.zip
       unzip -j polaris_cli-linux64.zip -d /tmp
       /tmp/polaris analyze -w
+      
+- task: Bash@3
+  name: 'Software_Composition_Analysis_With_BlackDuck'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your commands here
+      if [ "$(IS_SCA_ENABLED)" = "x" ] || [ "$(IS_SCA_ENABLED)" = "false" ] || [ "$(IS_SCA_ENABLED)" = "null" ]; then
+          echo "SCA Scanning is disabled."
+          exit 0
+      fi
+      pwd && wget "https://detect.synopsys.com/detect.sh" && chmod +x detect.sh
+      ./detect.sh --blackduck.url="$(BLACKDUCK_SERVER_URL)" --blackduck.api.token="$(BLACKDUCK_ACCESS_TOKEN)" \
+        --detect.tools="SIGNATURE_SCAN,DETECTOR" --detect.project.name="$(BD_PROJECT_NAME)" --detect.project.version.name="$(BLACKDUCK_PROJECT_VERSION)" \
+        --detect.code.location.name="$(BD_PROJECT_NAME)-$(BLACKDUCK_PROJECT_VERSION)" --logging.level.com.synopsys.integration="INFO" $ADDITIONAL_BD_ARGS
 
 - task: Bash@3
   name: 'Synopsys_Intelligent_Security_Scan_Stage_WORKFLOW'
