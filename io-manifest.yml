@@ -45,7 +45,7 @@ buildbreaker:
 tool_information:
 - tool_name: "polaris"
   fields:
-    project_name: "devsecops-test/github-io-sample"
+    project_name: "sig-devsecops/github-io-sample"
     instance_url: "https://csprod.polaris.synopsys.com"
     auth_token: "<<POLARIS_ACCESS_TOKEN>>"
   enabled: "<<IS_SAST_ENABLED>>"
