@@ -9,6 +9,12 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+- name: IO_SERVER_URL
+  value: http://23.99.131.170/api/ioiq
+- name: WORKFLOW_ENGINE_SERVER_URL
+  value: http://23.99.131.170/api/workflowengine
+
 steps:
 - task: Bash@3
   name: 'Initial_Stage'
@@ -29,21 +35,7 @@ steps:
         --stage="IO" \
         --io.url=$IO_SERVER_URL \
         --io.token=$IO_ACCESS_TOKEN \
-        --scm.type="gitlab" \
-        --workflow.url=$WORKFLOW_ENGINE_SERVER_URL \
-        --workflow.version=$WORKFLOW_ENGINE_VERSION \
-        --polaris.url=$POLARIS_SERVER_URL \
-        --polaris.token=$POLARIS_ACCESS_TOKEN \
-        --blackduck.url=$BLACKDUCK_SERVER_URL \
-        --blackduck.api.token=$BLACKDUCK_ACCESS_TOKEN \
-        --scm.owner=$SCM_OWNER \
-        --scm.repo.name=$SCM_REPO_NAME \
-        --scm.branch.name=$SCM_BRANCH_NAME \
-        --gitlab.url=$GITLAB_HOST_URL \
-        --gitlab.token=$GITLAB_TOKEN \
-        --IS_SAST_ENABLED=$IS_SAST_ENABLED \
-        --IS_SCA_ENABLED=$IS_SCA_ENABLED \
-        --IS_DAST_ENABLED=$IS_DAST_ENABLED \
+        --workflow.url=$WORKFLOW_ENGINE_SERVER_URL 
         ${ADDITIONALARGS}
       export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
       export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
