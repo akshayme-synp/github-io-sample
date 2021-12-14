@@ -126,7 +126,7 @@ steps:
 - task: CopyFiles@2
   name: 'Copy_Sarif_Report'
   inputs:
-    Contents: 'workflowengine-results.sarif'
+    Contents: 'workflowengine-results.sarif.json'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
