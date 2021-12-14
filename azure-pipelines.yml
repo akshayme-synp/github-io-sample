@@ -10,10 +10,6 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-- name: IO_SERVER_URL
-  value: http://23.99.131.170/api/ioiq
-- name: WORKFLOW_ENGINE_SERVER_URL
-  value: http://23.99.131.170/api/workflowengine
 - name: PERSONA
   value: devsecops
 
@@ -38,8 +34,6 @@ steps:
         ${ADDITIONALARGS}
        export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
        export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
-       echo "IS_SAST_ENABLED=${IS_SAST_ENABLED}" >> scans.env
-       echo "IS_SCA_ENABLED=${IS_SCA_ENABLED}" >> scans.env
        echo "##vso[task.setvariable variable=IS_SAST_ENABLED]$(jq -r '.security.activities.sast.enabled' result.json)"
        echo "##vso[task.setvariable variable=IS_SCA_ENABLED]$(jq -r '.security.activities.sca.enabled' result.json)"
        rm -rf synopsys-io.yml
@@ -67,8 +61,8 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-       echo "is_sast_enabled $(is_sast_enabled)"
-       echo "is_sca_enabled $(is_sca_enabled)"
+        echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
+        echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
        
 - task: Bash@3
   name: 'Static_Analysis_With_Polaris'
@@ -88,7 +82,9 @@ steps:
     targetType: 'inline'
     script: |
        echo "Trigger IO Workflow"
-       ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
+       ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
+       --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
+       --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
        echo "Triggering WorkFlowEngine "
        if [ $MANIFEST_TYPE == "yml" ]; then
           java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.yml
