@@ -111,6 +111,7 @@ steps:
        chmod +x WorkflowClient.jar
        ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
        --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
+       --msteams.webhook.url=$(TEAMS_WEBHOOK_URL) --codedx.api.key=$(CODEDX_API_KEY) \
        --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
        echo "Triggering WorkFlowEngine "
        if [ $(MANIFEST_TYPE) == "yml" ]; then
