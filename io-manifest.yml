@@ -13,7 +13,7 @@ connectors:
 connectors:
 - connector_name: "msteams"
   fields:
-    webhook_url:  "https://synopsys.webhook.office.com/webhookb2/ea82cd0e-3e5c-4dc0-9afe-5659a0d55118@c33c9f88-1eb7-4099-9700-16013fd9e8aa/IncomingWebhook/01ef2dda9b4e49509eaf8aba0814743b/01895858-7668-4159-8305-7c1ce3a0d288"
+    webhook_url: "<<TEAMS_WEBHOOK_URL>>" 
 - connector_name: "slack"
   fields:
     channelidentifier: "C01RF6ALQ49"
