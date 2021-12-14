@@ -12,6 +12,8 @@ pool:
 variables:
 - name: PERSONA
   value: devsecops
+- name: MANIFEST_TYPE
+  value: yml
 
 steps:
 - task: Bash@3
@@ -82,13 +84,15 @@ steps:
     targetType: 'inline'
     script: |
        echo "Trigger IO Workflow"
+       wget "https://github.com/synopsys-sig/io-artifacts/releases/download/2021.12.0-alpha-2/WorkflowClient.jar"
+       chmod +x WorkflowClient.jar
        ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
        --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
        --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
        echo "Triggering WorkFlowEngine "
-       if [ $MANIFEST_TYPE == "yml" ]; then
+       if [ $(MANIFEST_TYPE) == "yml" ]; then
           java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.yml
-       elif [ $MANIFEST_TYPE == "json" ]; then
+       elif [ $(MANIFEST_TYPE) == "json" ]; then
           java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.json
        fi
        rm -rf synopsys-io.yml
