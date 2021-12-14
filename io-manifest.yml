@@ -13,11 +13,14 @@ connectors:
 connectors:
 - connector_name: "msteams"
   fields:
-    webhook_url: "<<TEAMS_WEBHOOK_URL>>" 
+    webhook_url: "<<MSTEAMS_WEBHOOK_URL>>" 
 - connector_name: "slack"
   fields:
     channelidentifier: "C01RF6ALQ49"
     bearertoken: "<<SLACK_TOKEN>>"
+- connector_name: "github"
+  fields:
+    file_path: "workflowengine-results.sarif.json"
 - connector_name: "jira"
   fields:
     username: "sig-rnd-io-testuser@synopsys.com"
