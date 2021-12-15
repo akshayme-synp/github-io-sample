@@ -118,22 +118,17 @@ jobs:
     - task: UsePythonVersion@0
       name: Get_Python_Interpreter
       displayName: Get Python Interpreter
-      # Set up Python if it is master or a pull request
-      condition: or(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['Build.Reason'], 'PullRequest'))
       inputs:
         versionSpec: '3.7'
         addToPath: true
 
     - script: $(pyTools.pythonLocation)/bin/pip install --upgrade pandas requests jsonapi_requests azure-devops
       displayName: Install Python Module Dependencies
-      condition: or(eq(variables['Build.SourceBranchName'], 'main'), eq(variables['Build.Reason'], 'PullRequest'))
 
     - script: |
             git clone -q --depth 1 $SYNOPSYS_AZURE_TOOLS_REPO
             $(pyTools.pythonLocation)/bin/python synopsys-azure-tools/azure-polaris-issues-tool.py --url $POLARIS_URL --token $POLARIS_ACCESS_TOKEN --new --az-work-items --project "sig-devsecops/github-io-sample" --branch "origin/master"
       displayName: Create Work Items for New Issues
-      # Only create work items for pushes to a main branch
-      condition: eq(variables['Build.SourceBranchName'], 'main')
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         POLARIS_URL: $(POLARIS_URL)
