@@ -20,7 +20,7 @@ connectors:
     bearertoken: "<<SLACK_TOKEN>>"
 - connector_name: "github"
   fields:
-    file_path: "workflowengine-results.sarif.json"
+    file_path: "workflowengine-results.sarif"
 - connector_name: "jira"
   fields:
     username: "sig-rnd-io-testuser@synopsys.com"
