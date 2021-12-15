@@ -19,13 +19,6 @@ jobs:
 
     steps:
     - task: Bash@3
-      name: 'Initial_Stage'
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "Welcome to IO"
-
-    - task: Bash@3
       name: 'Synopsys_Intelligent_Security_Scan_Stage_IO'
       inputs:
         targetType: 'inline'
@@ -60,15 +53,7 @@ jobs:
               export changeScore=$(jq -r '.riskScoreCard.changeSignificanceScore' result.json | cut -d'/' -f2)
               echo -n "Total Score - " && echo "$bizScore + $dataScore + $accessScore + $vulnScore + $changeScore" | bc
           fi
-
-    - task: Bash@3
-      name: 'Print_IO_Prescription'
-      inputs:
-        targetType: 'inline'
-        script: |
-            echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
-            echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
-       
+    
     - task: Bash@3
       name: 'Static_Analysis_With_Polaris'
       inputs:
