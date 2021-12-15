@@ -49,8 +49,8 @@ buildbreaker:
   categories:
   - name: "cve-2015-2119"
     severity: "medium"
- - activityname: codedx
-   min_risk_score: 80
+- activityname: codedx
+  min_risk_score: 80
 tool_information:
 - tool_name: "polaris"
   fields:
