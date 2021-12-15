@@ -124,17 +124,20 @@ jobs:
     - task: UsePythonVersion@0
       name: pyTools
       displayName: Get Python Interpreter
+      condition: eq(variables['IS_SAST_ENABLED'], 'true')
       inputs:
         versionSpec: '3.7'
         addToPath: true
 
     - script: $(pyTools.pythonLocation)/bin/pip install --upgrade pandas requests jsonapi_requests azure-devops
       displayName: Install Python Module Dependencies
+      condition: eq(variables['IS_SAST_ENABLED'], 'true')
 
     - script: |
             git clone -q --depth 1 $SYNOPSYS_AZURE_TOOLS_REPO
             $(pyTools.pythonLocation)/bin/python synopsys-azure-tools/azure-polaris-issues-tool.py --url $POLARIS_URL --token $POLARIS_ACCESS_TOKEN --new --az-work-items --project "sig-devsecops/github-io-sample" --branch "origin/master"
       displayName: Create Work Items for New Issues
+      condition: eq(variables['IS_SAST_ENABLED'], 'true')
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         POLARIS_URL: $(POLARIS_SERVER_URL)
