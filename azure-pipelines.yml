@@ -33,6 +33,7 @@ jobs:
           export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
           echo "##vso[task.setvariable variable=IS_SAST_ENABLED]$(jq -r '.security.activities.sast.enabled' result.json)"
           echo "##vso[task.setvariable variable=IS_SCA_ENABLED]$(jq -r '.security.activities.sca.enabled' result.json)"
+          cat result.json
           rm -rf synopsys-io.yml
           rm -rf synopsys-io.json
           echo "================================== IO Prescription ======================================="
