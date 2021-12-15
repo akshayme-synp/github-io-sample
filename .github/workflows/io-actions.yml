@@ -36,7 +36,8 @@ jobs:
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         workflowVersion: 2021.12.0-alpha-2
         manifestType: yml
-        additionalWorkflowArgs: --persona=$persona --release.type=$release_type --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} 
+        additionalWorkflowArgs: --persona=$persona --release.type=$release_type --polaris.url=${{secrets.POLARIS_SERVER_URL}} 
+                --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --codedx.api.key=${{CODEDX_API_KEY}}
         stage: "IO"
     
     # Please note that the ID in previous step was set to prescription
@@ -76,6 +77,7 @@ jobs:
                 --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
                 --polaris.project.name=sig-devsecops/github-io-sample --polaris.url=${{secrets.ORG_POLARIS_SERVER_URL}} --polaris.token=${{secrets.ORG_POLARIS_ACCESS_TOKEN}} 
                 --blackduck.project.name=github-io-sample:1.0.0 --blackduck.url=${{secrets.ORG_BLACKDUCK_URL}} --blackduck.api.token=${{secrets.ORG_BLACKDUCK_TOKEN}}
+                --msteams.webhook.url=${{TEAMS_WEBHOOK_URL}} --codedx.api.key=${{CODEDX_API_KEY}}
         stage: "WORKFLOW"
     
     - name: Upload SARIF file
