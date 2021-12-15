@@ -131,5 +131,5 @@ jobs:
       displayName: Create Work Items for New Issues
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-        POLARIS_URL: $(POLARIS_URL)
+        POLARIS_URL: $(POLARIS_SERVER_URL)
         POLARIS_ACCESS_TOKEN: $(POLARIS_ACCESS_TOKEN)
