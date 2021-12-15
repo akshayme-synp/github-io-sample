@@ -33,11 +33,11 @@ jobs:
           export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
           echo "##vso[task.setvariable variable=IS_SAST_ENABLED]$(jq -r '.security.activities.sast.enabled' result.json)"
           echo "##vso[task.setvariable variable=IS_SCA_ENABLED]$(jq -r '.security.activities.sca.enabled' result.json)"
-          echo "\n================================ Raw IO Prescription ====================================="
+          printf "================================ Raw IO Prescription ====================================="
           cat result.json
           rm -rf synopsys-io.yml
           rm -rf synopsys-io.json
-          echo "\n================================ AST IO Prescription ====================================="
+          printf "================================ AST IO Prescription ====================================="
           echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
           echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
           if [ "$(PERSONA)" == "devsecops" ]; then
