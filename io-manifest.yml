@@ -4,7 +4,7 @@ environment:
   scm: "github"
   scmOwner: "devsecops-test"
   scmRepositoryName: "github-io-sample"
-  scmBranchName: "master"
+  scmBranchName: "production"
   githubApiUrl: "https://api.github.com/repos/"
   githubUsername: "rahulguna10"
   githubToken: "<<GITHUB_ACCESS_TOKEN>>"
