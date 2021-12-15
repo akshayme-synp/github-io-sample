@@ -1,139 +1,137 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-# try
+# Synopsys IO Azure Pipeline
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
+jobs:
+  - job: Synopsys_IO_Scan
+    pool:
+      vmImage: ubuntu-latest
 
-variables:
-- name: PERSONA
-  value: devsecops
-- name: MANIFEST_TYPE
-  value: yml
-- name: BD_PROJECT_NAME
-  value: "devsecops-test/github-io-sample"
-- name: BLACKDUCK_PROJECT_VERSION
-  value: 1.0
+    variables:
+    - name: PERSONA
+      value: devsecops
+    - name: MANIFEST_TYPE
+      value: yml
+    - name: BD_PROJECT_NAME        
+      value: "devsecops-test/github-io-sample"
+    - name: BLACKDUCK_PROJECT_VERSION
+      value: 1.0
 
-steps:
-- task: Bash@3
-  name: 'Initial_Stage'
-  inputs:
-    targetType: 'inline'
-    script: |
-       echo "Welcome to IO"
+    steps:
+    - task: Bash@3
+      name: 'Initial_Stage'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Welcome to IO"
 
-- task: Bash@3
-  name: 'Synopsys_Intelligent_Security_Scan_Stage_IO'
-  inputs:
-    targetType: 'inline'
-    script: |
-       echo "Trigger IO"
-       wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0-alpha-2/prescription.sh"
-       chmod +x prescription.sh
-       ./prescription.sh --release.type="major" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
-       --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" --codedx.api.key="$(CODEDX_API_KEY)" \
-        --asset.id="devsecops-test/github-io-sample" --scm.type="github" --scm.owner="devsecops-test" --scm.repo.name="github-io-sample" --scm.branch.name="master" \
-        ${ADDITIONALARGS}
-       export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
-       export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
-       echo "##vso[task.setvariable variable=IS_SAST_ENABLED]$(jq -r '.security.activities.sast.enabled' result.json)"
-       echo "##vso[task.setvariable variable=IS_SCA_ENABLED]$(jq -r '.security.activities.sca.enabled' result.json)"
-       rm -rf synopsys-io.yml
-       rm -rf synopsys-io.json
-       echo "================================== IO Prescription ======================================="
-       echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
-       echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
-       if [ "$(PERSONA)" == "devsecops" ]; then
-          echo "==================================== IO Risk Score ======================================="
-          echo "Buisness Criticality Score - $(jq -r '.riskScoreCard.bizCriticalityScore' result.json)"
-          echo "Data Class Score - $(jq -r '.riskScoreCard.dataClassScore' result.json)"
-          echo "Access Score - $(jq -r '.riskScoreCard.accessScore' result.json)"
-          echo "Open Vulnerability Score - $(jq -r '.riskScoreCard.openVulnScore' result.json)"
-          echo "Change Significance Score - $(jq -r '.riskScoreCard.changeSignificanceScore' result.json)"
-          export bizScore=$(jq -r '.riskScoreCard.bizCriticalityScore' result.json | cut -d'/' -f2)
-          export dataScore=$(jq -r '.riskScoreCard.dataClassScore' result.json | cut -d'/' -f2)
-          export accessScore=$(jq -r '.riskScoreCard.accessScore' result.json | cut -d'/' -f2)
-          export vulnScore=$(jq -r '.riskScoreCard.openVulnScore' result.json | cut -d'/' -f2)
-          export changeScore=$(jq -r '.riskScoreCard.changeSignificanceScore' result.json | cut -d'/' -f2)
-          echo -n "Total Score - " && echo "$bizScore + $dataScore + $accessScore + $vulnScore + $changeScore" | bc
-       fi
+    - task: Bash@3
+      name: 'Synopsys_Intelligent_Security_Scan_Stage_IO'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Trigger IO"
+          wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0-alpha-2/prescription.sh"
+          chmod +x prescription.sh
+          ./prescription.sh --release.type="major" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
+          --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" --codedx.api.key="$(CODEDX_API_KEY)" \
+            --asset.id="devsecops-test/github-io-sample" --scm.type="github" --scm.owner="devsecops-test" --scm.repo.name="github-io-sample" --scm.branch.name="master" \
+            ${ADDITIONALARGS}
+          export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
+          export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
+          echo "##vso[task.setvariable variable=IS_SAST_ENABLED]$(jq -r '.security.activities.sast.enabled' result.json)"
+          echo "##vso[task.setvariable variable=IS_SCA_ENABLED]$(jq -r '.security.activities.sca.enabled' result.json)"
+          rm -rf synopsys-io.yml
+          rm -rf synopsys-io.json
+          echo "================================== IO Prescription ======================================="
+          echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
+          echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
+          if [ "$(PERSONA)" == "devsecops" ]; then
+              echo "==================================== IO Risk Score ======================================="
+              echo "Buisness Criticality Score - $(jq -r '.riskScoreCard.bizCriticalityScore' result.json)"
+              echo "Data Class Score - $(jq -r '.riskScoreCard.dataClassScore' result.json)"
+              echo "Access Score - $(jq -r '.riskScoreCard.accessScore' result.json)"
+              echo "Open Vulnerability Score - $(jq -r '.riskScoreCard.openVulnScore' result.json)"
+              echo "Change Significance Score - $(jq -r '.riskScoreCard.changeSignificanceScore' result.json)"
+              export bizScore=$(jq -r '.riskScoreCard.bizCriticalityScore' result.json | cut -d'/' -f2)
+              export dataScore=$(jq -r '.riskScoreCard.dataClassScore' result.json | cut -d'/' -f2)
+              export accessScore=$(jq -r '.riskScoreCard.accessScore' result.json | cut -d'/' -f2)
+              export vulnScore=$(jq -r '.riskScoreCard.openVulnScore' result.json | cut -d'/' -f2)
+              export changeScore=$(jq -r '.riskScoreCard.changeSignificanceScore' result.json | cut -d'/' -f2)
+              echo -n "Total Score - " && echo "$bizScore + $dataScore + $accessScore + $vulnScore + $changeScore" | bc
+          fi
 
-- task: Bash@3
-  name: 'Print_IO_Prescription'
-  inputs:
-    targetType: 'inline'
-    script: |
-        echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
-        echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
+    - task: Bash@3
+      name: 'Print_IO_Prescription'
+      inputs:
+        targetType: 'inline'
+        script: |
+            echo "Is SAST Enabled - ${IS_SAST_ENABLED}"
+            echo "Is SCA Enabled - ${IS_SCA_ENABLED}"
        
-- task: Bash@3
-  name: 'Static_Analysis_With_Polaris'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your commands here
-      if [ "$(IS_SAST_ENABLED)" = "x" ] || [ "$(IS_SAST_ENABLED)" = "false" ] || [ "$(IS_SAST_ENABLED)" = "null" ]; then
-          echo "SAST Scanning is disabled."
-          exit 0
-      fi
-      export POLARIS_SERVER_URL=$(POLARIS_SERVER_URL)
-      export POLARIS_ACCESS_TOKEN=$(POLARIS_ACCESS_TOKEN)
-      wget -q $(POLARIS_SERVER_URL)/api/tools/polaris_cli-linux64.zip
-      unzip -j polaris_cli-linux64.zip -d /tmp
-      /tmp/polaris analyze -w
+    - task: Bash@3
+      name: 'Static_Analysis_With_Polaris'
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          if [ "$(IS_SAST_ENABLED)" = "x" ] || [ "$(IS_SAST_ENABLED)" = "false" ] || [ "$(IS_SAST_ENABLED)" = "null" ]; then
+              echo "SAST Scanning is disabled."
+              exit 0
+          fi
+          export POLARIS_SERVER_URL=$(POLARIS_SERVER_URL)
+          export POLARIS_ACCESS_TOKEN=$(POLARIS_ACCESS_TOKEN)
+          wget -q $(POLARIS_SERVER_URL)/api/tools/polaris_cli-linux64.zip
+          unzip -j polaris_cli-linux64.zip -d /tmp
+          /tmp/polaris analyze -w
       
-- task: Bash@3
-  name: 'Software_Composition_Analysis_With_BlackDuck'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your commands here
-      if [ "$(IS_SCA_ENABLED)" = "x" ] || [ "$(IS_SCA_ENABLED)" = "false" ] || [ "$(IS_SCA_ENABLED)" = "null" ]; then
-          echo "SCA Scanning is disabled."
-          exit 0
-      fi
-      pwd && wget "https://detect.synopsys.com/detect.sh" && chmod +x detect.sh
-      ./detect.sh --blackduck.url="$(BLACKDUCK_SERVER_URL)" --blackduck.api.token="$(BLACKDUCK_ACCESS_TOKEN)" \
-        --detect.tools="SIGNATURE_SCAN,DETECTOR" --detect.project.name="$(BD_PROJECT_NAME)" --detect.project.version.name="$(BLACKDUCK_PROJECT_VERSION)" \
-        --detect.code.location.name="$(BD_PROJECT_NAME)-$(BLACKDUCK_PROJECT_VERSION)" --logging.level.com.synopsys.integration="INFO" $ADDITIONAL_BD_ARGS
+    - task: Bash@3
+      name: 'Software_Composition_Analysis_With_BlackDuck'
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          if [ "$(IS_SCA_ENABLED)" = "x" ] || [ "$(IS_SCA_ENABLED)" = "false" ] || [ "$(IS_SCA_ENABLED)" = "null" ]; then
+              echo "SCA Scanning is disabled."
+              exit 0
+          fi
+          pwd && wget "https://detect.synopsys.com/detect.sh" && chmod +x detect.sh
+          ./detect.sh --blackduck.url="$(BLACKDUCK_SERVER_URL)" --blackduck.api.token="$(BLACKDUCK_ACCESS_TOKEN)" \
+            --detect.tools="SIGNATURE_SCAN,DETECTOR" --detect.project.name="$(BD_PROJECT_NAME)" --detect.project.version.name="$(BLACKDUCK_PROJECT_VERSION)" \
+            --detect.code.location.name="$(BD_PROJECT_NAME)-$(BLACKDUCK_PROJECT_VERSION)" --logging.level.com.synopsys.integration="INFO" $ADDITIONAL_BD_ARGS
 
-- task: Bash@3
-  name: 'Synopsys_Intelligent_Security_Scan_Stage_WORKFLOW'
-  inputs:
-    targetType: 'inline'
-    script: |
-       echo "Trigger IO Workflow"
-       wget "https://github.com/synopsys-sig/io-artifacts/releases/download/2021.12.0-alpha-2/WorkflowClient.jar"
-       chmod +x WorkflowClient.jar
-       ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
-       --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
-       --msteams.webhook.url=$(TEAMS_WEBHOOK_URL) --codedx.api.key=$(CODEDX_API_KEY) \
-       --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
-       echo "Triggering WorkFlowEngine "
-       if [ $(MANIFEST_TYPE) == "yml" ]; then
-          java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.yml
-       elif [ $(MANIFEST_TYPE) == "json" ]; then
-          java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.json
-       fi
-       rm -rf synopsys-io.yml
-       rm -rf synopsys-io.json
-       echo "========================== IO WorkflowEngine Summary ============================" 
-       echo "Breaker Status - $(jq -r '.breaker.status' wf-output.json)"
+    - task: Bash@3
+      name: 'Synopsys_Intelligent_Security_Scan_Stage_WORKFLOW'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Trigger IO Workflow"
+          wget "https://github.com/synopsys-sig/io-artifacts/releases/download/2021.12.0-alpha-2/WorkflowClient.jar"
+          chmod +x WorkflowClient.jar
+          ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
+          --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
+          --msteams.webhook.url=$(TEAMS_WEBHOOK_URL) --codedx.api.key=$(CODEDX_API_KEY) \
+          --IS_SAST_ENABLED=$(IS_SAST_ENABLED) --IS_SCA_ENABLED=$(IS_SCA_ENABLED) --IS_DAST_ENABLED=$(IS_DAST_ENABLED)
+          echo "Triggering WorkFlowEngine "
+          if [ $(MANIFEST_TYPE) == "yml" ]; then
+              java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.yml
+          elif [ $(MANIFEST_TYPE) == "json" ]; then
+              java -jar WorkflowClient.jar --workflowengine.url=$WORKFLOW_ENGINE_SERVER_URL --io.manifest.path=synopsys-io.json
+          fi
+          rm -rf synopsys-io.yml
+          rm -rf synopsys-io.json
+          echo "========================== IO WorkflowEngine Summary ============================" 
+          echo "Breaker Status - $(jq -r '.breaker.status' wf-output.json)"
 
-- task: CopyFiles@2
-  name: 'Copy_Sarif_Report'
-  inputs:
-    Contents: 'workflowengine-results.sarif.json'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      name: 'Copy_Sarif_Report'
+      inputs:
+        Contents: 'workflowengine-results.sarif'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  name: 'Publish_Sarif_Report'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'CodeAnalysisLogs'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      name: 'Publish_Sarif_Report'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'CodeAnalysisLogs'
+        publishLocation: 'Container'
