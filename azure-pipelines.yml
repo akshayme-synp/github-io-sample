@@ -9,7 +9,9 @@ jobs:
 
     variables:
     - name: PERSONA
-      value: devsecops
+      value: developer
+    - name: RELEASE
+      value: minor
     - name: MANIFEST_TYPE
       value: yml
     - name: BD_PROJECT_NAME        
@@ -26,7 +28,7 @@ jobs:
           echo "Trigger IO"
           wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0-alpha-2/prescription.sh"
           chmod +x prescription.sh
-          ./prescription.sh --release.type="major" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
+          ./prescription.sh --release.type="$(RELEASE)" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
           --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" --codedx.api.key="$(CODEDX_API_KEY)" \
             --asset.id="devsecops-test/github-io-sample" --scm.type="github" --scm.owner="devsecops-test" --scm.repo.name="github-io-sample" --scm.branch.name="master" \
             ${ADDITIONALARGS}
@@ -56,14 +58,15 @@ jobs:
     
     - task: Bash@3
       name: 'Static_Analysis_With_Polaris'
+      condition: eq(variables['IS_SAST_ENABLED'], 'true')
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          if [ "$(IS_SAST_ENABLED)" = "x" ] || [ "$(IS_SAST_ENABLED)" = "false" ] || [ "$(IS_SAST_ENABLED)" = "null" ]; then
-              echo "SAST Scanning is disabled."
-              exit 0
-          fi
+          #if [ "$(IS_SAST_ENABLED)" = "x" ] || [ "$(IS_SAST_ENABLED)" = "false" ] || [ "$(IS_SAST_ENABLED)" = "null" ]; then
+          #    echo "SAST Scanning is disabled."
+          #    exit 0
+          #fi
           export POLARIS_SERVER_URL=$(POLARIS_SERVER_URL)
           export POLARIS_ACCESS_TOKEN=$(POLARIS_ACCESS_TOKEN)
           wget -q $(POLARIS_SERVER_URL)/api/tools/polaris_cli-linux64.zip
@@ -72,14 +75,15 @@ jobs:
       
     - task: Bash@3
       name: 'Software_Composition_Analysis_With_BlackDuck'
+      condition: eq(variables['IS_SCA_ENABLED'], 'true')
       inputs:
         targetType: 'inline'
         script: |
           # Write your commands here
-          if [ "$(IS_SCA_ENABLED)" = "x" ] || [ "$(IS_SCA_ENABLED)" = "false" ] || [ "$(IS_SCA_ENABLED)" = "null" ]; then
-              echo "SCA Scanning is disabled."
-              exit 0
-          fi
+          #if [ "$(IS_SCA_ENABLED)" = "x" ] || [ "$(IS_SCA_ENABLED)" = "false" ] || [ "$(IS_SCA_ENABLED)" = "null" ]; then
+          #    echo "SCA Scanning is disabled."
+          #    exit 0
+          #fi
           pwd && wget "https://detect.synopsys.com/detect.sh" && chmod +x detect.sh
           ./detect.sh --blackduck.url="$(BLACKDUCK_SERVER_URL)" --blackduck.api.token="$(BLACKDUCK_ACCESS_TOKEN)" \
             --detect.tools="SIGNATURE_SCAN,DETECTOR" --detect.project.name="$(BD_PROJECT_NAME)" --detect.project.version.name="$(BLACKDUCK_PROJECT_VERSION)" \
