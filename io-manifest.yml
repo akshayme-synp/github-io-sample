@@ -1,5 +1,6 @@
 application:
   projectName: "devsecops-test/github-io-sample"
+  release: <<RELEASE_TYPE>>
 environment:
   scm: "github"
   scmOwner: "devsecops-test"
