@@ -107,6 +107,7 @@ jobs:
           rm -rf synopsys-io.json
           echo "========================== IO WorkflowEngine Summary ============================" 
           echo "Breaker Status - $(jq -r '.breaker.status' wf-output.json)"
+          echo "CodeDX Score - $(jq -r '.breaker.criteria[].risk_score' wf-output.json)"
 
     - task: CopyFiles@2
       name: 'Copy_Sarif_Report'
