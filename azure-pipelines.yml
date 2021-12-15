@@ -17,7 +17,8 @@ jobs:
 
     steps:
     - task: Bash@3
-      name: 'Synopsys_Intelligent_Security_Scan_Stage_IO'
+      displayName: Synopsys IO Stage
+      name: 'Stage_IO'
       inputs:
         targetType: 'inline'
         script: |
@@ -53,7 +54,8 @@ jobs:
           fi
     
     - task: Bash@3
-      name: 'Static_Analysis_With_Polaris'
+      displayName: Static Analysis With Polaris
+      name: 'SAST_With_Polaris'
       condition: eq(variables['IS_SAST_ENABLED'], 'true')
       inputs:
         targetType: 'inline'
@@ -65,7 +67,8 @@ jobs:
           /tmp/polaris analyze -w
       
     - task: Bash@3
-      name: 'Software_Composition_Analysis_With_BlackDuck'
+      displayName: Software Composition Analysis with Blackduck
+      name: 'SCA_With_BlackDuck'
       condition: eq(variables['IS_SCA_ENABLED'], 'true')
       inputs:
         targetType: 'inline'
@@ -76,7 +79,8 @@ jobs:
             --detect.code.location.name="$(BD_PROJECT_NAME)-$(BLACKDUCK_PROJECT_VERSION)" --logging.level.com.synopsys.integration="INFO" $ADDITIONAL_BD_ARGS
 
     - task: Bash@3
-      name: 'Synopsys_Intelligent_Security_Scan_Stage_WORKFLOW'
+      displayName: Synopsys IO Workflow Stage
+      name: 'Stage_Workflow'
       condition: or(eq(variables['IS_SAST_ENABLED'], 'true'), eq(variables['IS_SCA_ENABLED'], 'true'))
       inputs:
         targetType: 'inline'
@@ -101,6 +105,7 @@ jobs:
           echo "CodeDX Score - $(jq -r '.breaker.criteria[2].risk_score' wf-output.json)"
 
     - task: CopyFiles@2
+      displayName: Copy Sarif Report
       name: 'Copy_Sarif_Report'
       condition: eq(variables['IS_SAST_ENABLED'], 'true')
       inputs:
@@ -108,6 +113,7 @@ jobs:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
+      displayName: Publish Sarif Report
       name: 'Publish_Sarif_Report'
       condition: eq(variables['IS_SAST_ENABLED'], 'true')
       inputs:
@@ -116,7 +122,7 @@ jobs:
         publishLocation: 'Container'
         
     - task: UsePythonVersion@0
-      name: Get_Python_Interpreter
+      name: pyTools
       displayName: Get Python Interpreter
       inputs:
         versionSpec: '3.7'
