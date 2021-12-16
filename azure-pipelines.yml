@@ -23,7 +23,7 @@ jobs:
         targetType: 'inline'
         script: |
           echo "Trigger IO"
-          wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0-alpha-2/prescription.sh"
+          wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0.12-alpha/prescription.sh"
           chmod +x prescription.sh
           ./prescription.sh --release.type="$(RELEASE)" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
           --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" --codedx.api.key="$(CODEDX_API_KEY)" \
@@ -88,7 +88,7 @@ jobs:
         targetType: 'inline'
         script: |
           echo "Trigger IO Workflow"
-          wget "https://github.com/synopsys-sig/io-artifacts/releases/download/2021.12.0-alpha-2/WorkflowClient.jar"
+          wget "https://github.com/synopsys-sig/io-artifacts/releases/download/2021.12.0.12-alpha/WorkflowClient.jar"
           chmod +x WorkflowClient.jar
           ./prescription.sh --stage="WORKFLOW" --io.url=$(IO_SERVER_URL) --io.token=$(IO_ACCESS_TOKEN) --workflow.url=$(WORKFLOW_ENGINE_SERVER_URL) \
           --polaris.token=$(POLARIS_ACCESS_TOKEN) --blackduck.api.token=$(BLACKDUCK_ACCESS_TOKEN) \
