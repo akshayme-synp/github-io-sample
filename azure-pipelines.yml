@@ -8,7 +8,7 @@ jobs:
       vmImage: ubuntu-latest
 
     variables:
-      PERSONA: developer
+      PERSONA: devsecops
       RELEASE: minor
       MANIFEST_TYPE: yml
       BD_PROJECT_NAME: "devsecops-test/github-io-sample"
