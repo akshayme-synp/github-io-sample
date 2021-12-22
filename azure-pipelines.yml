@@ -11,8 +11,15 @@ jobs:
       PERSONA: devsecops
       RELEASE: minor
       MANIFEST_TYPE: yml
+      PROJECT_NAME: "devsecops-test/github-io-sample"
+      SCM_TYPE: github
+      SCM_OWNER: devsecops-test
+      SCM_REPO_NAME: github-io-sample
+      SCM_BRANCH_NAME: master
       BD_PROJECT_NAME: "devsecops-test/github-io-sample"
       BLACKDUCK_PROJECT_VERSION: 1.0
+      POLARIS_PROJECT_NAME: sig-devsecops/github-io-sample
+      POLARIS_BRANCH_NAME: origin/master
       SYNOPSYS_AZURE_TOOLS_REPO: https://github.com/synopsys-sig-community/synopsys-azure-tools
 
     steps:
@@ -27,7 +34,7 @@ jobs:
           chmod +x prescription.sh
           ./prescription.sh --release.type="$(RELEASE)" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" \
           --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" --codedx.api.key="$(CODEDX_API_KEY)" \
-            --asset.id="devsecops-test/github-io-sample" --scm.type="github" --scm.owner="devsecops-test" --scm.repo.name="github-io-sample" --scm.branch.name="master" \
+            --asset.id="$(PROJECT_NAME)" --scm.type="$(SCM_TYPE)" --scm.owner="$(SCM_OWNER)" --scm.repo.name="$(SCM_REPO_NAME)" --scm.branch.name="$(SCM_BRANCH_NAME)" \
             ${ADDITIONALARGS}
           export IS_SAST_ENABLED=$(jq -r '.security.activities.sast.enabled' result.json)
           export IS_SCA_ENABLED=$(jq -r '.security.activities.sca.enabled' result.json)
@@ -137,7 +144,7 @@ jobs:
 
     - script: |
             git clone -q --depth 1 $SYNOPSYS_AZURE_TOOLS_REPO
-            $(pyTools.pythonLocation)/bin/python synopsys-azure-tools/azure-polaris-issues-tool.py --url $POLARIS_URL --token $POLARIS_ACCESS_TOKEN --new --az-work-items --project "sig-devsecops/github-io-sample" --branch "origin/master"
+            $(pyTools.pythonLocation)/bin/python synopsys-azure-tools/azure-polaris-issues-tool.py --url $POLARIS_URL --token $POLARIS_ACCESS_TOKEN --new --az-work-items --project "$(POLARIS_PROJECT_NAME)" --branch "$(POLARIS_BRANCH_NAME)"
       displayName: Create Work Items for New Issues
       condition: eq(variables['IS_SAST_ENABLED'], 'true')
       env:
