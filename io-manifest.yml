@@ -1,13 +1,13 @@
 application:
-  projectName: "devsecops-test/github-io-sample"
+  projectName: <<ASSET_ID>>
   release: <<RELEASE_TYPE>>
 environment:
-  scm: "github"
-  scmOwner: "devsecops-test"
-  scmRepositoryName: "github-io-sample"
-  scmBranchName: "master"
+  scm: <<SCM_TYPE>>
+  scmOwner: <<SCM_OWNER>>
+  scmRepositoryName: <<SCM_REPO_NAME>>
+  scmBranchName: <<SCM_BRANCH_NAME>>
   githubApiUrl: "https://api.github.com/repos/"
-  githubUsername: "rahulguna10"
+  githubUsername: <<GITHUB_USERNAME>>
   githubToken: "<<GITHUB_ACCESS_TOKEN>>"
   enableJira: false
 connectors:
@@ -55,8 +55,8 @@ buildbreaker:
 tool_information:
 - tool_name: "polaris"
   fields:
-    project_name: "sig-devsecops/github-io-sample"
-    instance_url: "https://csprod.polaris.synopsys.com"
+    project_name: <<POLARIS_PROJECT_NAME>>
+    instance_url: <<POLARIS_SERVER_URL>>
     auth_token: "<<POLARIS_ACCESS_TOKEN>>"
   enabled: "<<IS_SAST_ENABLED>>"
 - tool_name: "coverity"
@@ -73,11 +73,11 @@ tool_information:
   enabled: false
 - tool_name: "blackduck"
   fields:
-    project_name: "devsecops-test/github-io-sample:1.0"
-    instance_url: "https://bizdevhub.blackducksoftware.com"
+    project_name: <<BLACKDUCK_PROJECT_NAME>>
+    instance_url: <<BLACKDUCK_SERVER_URL>>
     auth_token: "<<BLACKDUCK_ACCESS_TOKEN>>"
   enabled: "<<IS_SCA_ENABLED>>"
 codedx:
-  instance_url: http://23.99.131.170:8080/codedx
+  instance_url: <<CODEDX_SERVER_URL>>
   api_key: <<CODEDX_API_KEY>>
-  project_id: 1
+  project_id: <<CODEDX_PROJECT_ID>>
