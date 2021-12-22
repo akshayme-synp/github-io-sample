@@ -11,7 +11,6 @@ environment:
   githubToken: "<<GITHUB_ACCESS_TOKEN>>"
   enableJira: false
 connectors:
-connectors:
 - connector_name: "msteams"
   fields:
     webhook_url: "<<MSTEAMS_WEBHOOK_URL>>" 
