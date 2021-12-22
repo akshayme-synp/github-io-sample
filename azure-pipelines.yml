@@ -12,7 +12,7 @@ jobs:
       PERSONA: devsecops
       RELEASE: minor
       MANIFEST_TYPE: yml
-      ASSET_ID: "devsecops-test/github-io-sample"
+      PROJECT_NAME: "devsecops-test/github-io-sample"
       #SCM details
       SCM_TYPE: github
       SCM_OWNER: devsecops-test
@@ -43,7 +43,7 @@ jobs:
           wget "https://raw.githubusercontent.com/synopsys-sig/io-artifacts/2021.12.0.12-alpha/prescription.sh"
           chmod +x prescription.sh
           ./prescription.sh --release.type="$(RELEASE)" --persona="$(PERSONA)" --stage="IO" --io.url="$(IO_SERVER_URL)" --io.token="$(IO_ACCESS_TOKEN)" --workflow.url="$(WORKFLOW_ENGINE_SERVER_URL)" \
-            --asset.id="$(ASSET_ID)" --scm.type="$(SCM_TYPE)" --scm.owner="$(SCM_OWNER)" --scm.repo.name="$(SCM_REPO_NAME)" --scm.branch.name="$(SCM_BRANCH_NAME)" --github.username="$(GITHUB_USERNAME)" \
+            --project.name="$(PROJECT_NAME)" --scm.type="$(SCM_TYPE)" --scm.owner="$(SCM_OWNER)" --scm.repo.name="$(SCM_REPO_NAME)" --scm.branch.name="$(SCM_BRANCH_NAME)" --github.username="$(GITHUB_USERNAME)" \
             --polaris.project.name="$(POLARIS_PROJECT_NAME)" --polaris.url="$(POLARIS_SERVER_URL)" \
             --blackduck.project.name="$(BLACKDUCK_PROJECT_NAME)" --blackduck.url="$(BLACKDUCK_SERVER_URL)" \
             --codedx.url="$(CODEDX_SERVER_URL)" --codedx.project.id="$(CODEDX_PROJECT_ID)" --codedx.api.key="$(CODEDX_API_KEY)"\

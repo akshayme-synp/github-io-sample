@@ -1,5 +1,5 @@
 application:
-  projectName: <<ASSET_ID>>
+  projectName: <<PROJECT_NAME>>
   release: <<RELEASE_TYPE>>
 environment:
   scm: <<SCM_TYPE>>
