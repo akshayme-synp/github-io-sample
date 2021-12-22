@@ -88,7 +88,7 @@ jobs:
           /tmp/polaris analyze -w
       
     - task: Bash@3
-      displayName: Software Composition Analysis with BlackDuck
+      displayName: Software Composition Analysis with Blackduck
       name: 'SCA_With_BlackDuck'
       condition: eq(variables['IS_SCA_ENABLED'], 'true')
       inputs:
