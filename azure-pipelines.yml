@@ -9,7 +9,8 @@ jobs:
 
     variables:
       #IO details
-      PERSONA: devsecops
+      SYNOPSYS_AZURE_TOOLS_REPO: https://github.com/synopsys-sig-community/synopsys-azure-tools
+      PERSONA: developer
       RELEASE: minor
       MANIFEST_TYPE: yml
       PROJECT_NAME: "devsecops-test/github-io-sample"
@@ -28,9 +29,9 @@ jobs:
       POLARIS_SERVER_URL: "https://csprod.polaris.synopsys.com"
       POLARIS_PROJECT_NAME: "sig-devsecops/github-io-sample"
       POLARIS_BRANCH_NAME: origin/master
+      #CodeDX details
       CODEDX_SERVER_URL: http://23.99.131.170:8080/codedx
       CODEDX_PROJECT_ID: 1
-      SYNOPSYS_AZURE_TOOLS_REPO: https://github.com/synopsys-sig-community/synopsys-azure-tools
 
     steps:
     - task: Bash@3
