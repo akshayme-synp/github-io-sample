@@ -44,7 +44,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		password = "corona-virus";
 		System.out.println("Password" + password);
 		System.out.println("username" + username);
-		System.out.println("username" + username);
 
 		List<Account> listAccounts = new ArrayList<>();
 		try {
