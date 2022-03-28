@@ -31,12 +31,16 @@ jobs:
     - name: Synopsys Intelligent Security Scan
       id: prescription
       uses: akshayme-synp/intelligent-security-scan@try-branch
+      env:
+        persona: devsecops
+        release_type: minor
+        manifest_type: json
       with:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         workflowVersion: 2021.12.2
-        additionalWorkflowArgs: --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
+        additionalWorkflowArgs: --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
         stage: "IO"    
     
 #     # Please note that the ID in previous step was set to prescription
