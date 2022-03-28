@@ -40,7 +40,7 @@ jobs:
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         workflowVersion: 2021.12.2
-        additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
+        additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.project.name="sig-devsecops/github-io-sample" --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
         stage: "IO"    
     
     # Please note that the ID in previous step was set to prescription
@@ -63,29 +63,24 @@ jobs:
 #       with:
 #          args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_TOKEN}}" --detect.tools="SIGNATURE_SCAN,DETECTOR"'
     
-#     - name: Synopsys Intelligent Security Scan
-#       if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
-#       uses: synopsys-sig/intelligent-security-scan@2021.12.0-alpha
-#       env:
-#         persona: devsecops
-#         release_type: minor
-#       with:
-#         ioServerUrl: ${{secrets.IO_SERVER_URL}}
-#         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
-#         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-#         workflowVersion: 2021.12.0.12-alpha
-#         manifestType: yml
-#         additionalWorkflowArgs: --persona=$persona --slack.channel.id=C015LGE7RRQ --slack.token=${{secrets.ORG_SLACK_TOKEN}} 
-#                 --jira.project.name=STAR --jira.assignee="Rahul Gunasekaran" --jira.api.url=https://rahulguna.atlassian.net --jira.username=rahulguna10@gmail.com --jira.auth.token=${{secrets.JIRA_TOKEN}}
-#                 --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
-#                 --polaris.project.name=sig-devsecops/github-io-sample --polaris.url=${{secrets.ORG_POLARIS_SERVER_URL}} --polaris.token=${{secrets.ORG_POLARIS_ACCESS_TOKEN}} 
-#                 --blackduck.project.name=github-io-sample:1.0.0 --blackduck.url=${{secrets.ORG_BLACKDUCK_URL}} --blackduck.api.token=${{secrets.ORG_BLACKDUCK_TOKEN}}
-#                 --msteams.webhook.url=${{secrets.TEAMS_WEBHOOK_URL}} --codedx.api.key=${{secrets.CODEDX_API_KEY}}
-#         stage: "WORKFLOW"
+    - name: Synopsys Intelligent Security Scan
+      if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
+      uses: akshayme-synp/intelligent-security-scan@try-branch
+      env:
+        persona: devsecops
+        release_type: minor
+        manifest_type: json
+      with:
+        ioServerUrl: ${{secrets.IO_SERVER_URL}}
+        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
+        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+        workflowVersion: 2021.12.2
+        additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.project.name="sig-devsecops/github-io-sample" --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
+        stage: "WORKFLOW"
     
-#     - name: Upload SARIF file
-#       if: ${{steps.prescription.outputs.sastScan == 'true' }}
-#       uses: github/codeql-action/upload-sarif@v1
-#       with:
-#         # Path to SARIF file relative to the root of the repository
-#         sarif_file: workflowengine-results.sarif
+    - name: Upload SARIF file
+      if: ${{steps.prescription.outputs.sastScan == 'true' }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: workflowengine-results.sarif
