@@ -37,7 +37,8 @@ jobs:
         workflowVersion: 2021.12.0.12-alpha
         manifestType: yml
         additionalWorkflowArgs: --persona=$persona --release.type=$release_type --polaris.url=${{secrets.POLARIS_SERVER_URL}} 
-                --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --codedx.api.key=${{secrets.CODEDX_API_KEY}}
+                --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} 
+#                 --codedx.api.key=${{secrets.CODEDX_API_KEY}}
         stage: "IO"
     
     # Please note that the ID in previous step was set to prescription
@@ -52,37 +53,37 @@ jobs:
           unzip -j polaris_cli-linux64.zip -d /tmp
           /tmp/polaris analyze -w
     
-    # Please note that the ID in previous step was set to prescription
-    # in order for this logic to work
-    - name: Software Composition Analysis with Black Duck
-      if: ${{steps.prescription.outputs.scaScan == 'true' }}
-      uses: blackducksoftware/github-action@v2
-      with:
-         args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_TOKEN}}" --detect.tools="SIGNATURE_SCAN,DETECTOR"'
+#     # Please note that the ID in previous step was set to prescription
+#     # in order for this logic to work
+#     - name: Software Composition Analysis with Black Duck
+#       if: ${{steps.prescription.outputs.scaScan == 'true' }}
+#       uses: blackducksoftware/github-action@v2
+#       with:
+#          args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_TOKEN}}" --detect.tools="SIGNATURE_SCAN,DETECTOR"'
     
-    - name: Synopsys Intelligent Security Scan
-      if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
-      uses: synopsys-sig/intelligent-security-scan@2021.12.0-alpha
-      env:
-        persona: devsecops
-        release_type: minor
-      with:
-        ioServerUrl: ${{secrets.IO_SERVER_URL}}
-        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
-        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        workflowVersion: 2021.12.0.12-alpha
-        manifestType: yml
-        additionalWorkflowArgs: --persona=$persona --slack.channel.id=C015LGE7RRQ --slack.token=${{secrets.ORG_SLACK_TOKEN}} 
-                --jira.project.name=STAR --jira.assignee="Rahul Gunasekaran" --jira.api.url=https://rahulguna.atlassian.net --jira.username=rahulguna10@gmail.com --jira.auth.token=${{secrets.JIRA_TOKEN}}
-                --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
-                --polaris.project.name=sig-devsecops/github-io-sample --polaris.url=${{secrets.ORG_POLARIS_SERVER_URL}} --polaris.token=${{secrets.ORG_POLARIS_ACCESS_TOKEN}} 
-                --blackduck.project.name=github-io-sample:1.0.0 --blackduck.url=${{secrets.ORG_BLACKDUCK_URL}} --blackduck.api.token=${{secrets.ORG_BLACKDUCK_TOKEN}}
-                --msteams.webhook.url=${{secrets.TEAMS_WEBHOOK_URL}} --codedx.api.key=${{secrets.CODEDX_API_KEY}}
-        stage: "WORKFLOW"
+#     - name: Synopsys Intelligent Security Scan
+#       if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
+#       uses: synopsys-sig/intelligent-security-scan@2021.12.0-alpha
+#       env:
+#         persona: devsecops
+#         release_type: minor
+#       with:
+#         ioServerUrl: ${{secrets.IO_SERVER_URL}}
+#         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
+#         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+#         workflowVersion: 2021.12.0.12-alpha
+#         manifestType: yml
+#         additionalWorkflowArgs: --persona=$persona --slack.channel.id=C015LGE7RRQ --slack.token=${{secrets.ORG_SLACK_TOKEN}} 
+#                 --jira.project.name=STAR --jira.assignee="Rahul Gunasekaran" --jira.api.url=https://rahulguna.atlassian.net --jira.username=rahulguna10@gmail.com --jira.auth.token=${{secrets.JIRA_TOKEN}}
+#                 --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
+#                 --polaris.project.name=sig-devsecops/github-io-sample --polaris.url=${{secrets.ORG_POLARIS_SERVER_URL}} --polaris.token=${{secrets.ORG_POLARIS_ACCESS_TOKEN}} 
+#                 --blackduck.project.name=github-io-sample:1.0.0 --blackduck.url=${{secrets.ORG_BLACKDUCK_URL}} --blackduck.api.token=${{secrets.ORG_BLACKDUCK_TOKEN}}
+#                 --msteams.webhook.url=${{secrets.TEAMS_WEBHOOK_URL}} --codedx.api.key=${{secrets.CODEDX_API_KEY}}
+#         stage: "WORKFLOW"
     
-    - name: Upload SARIF file
-      if: ${{steps.prescription.outputs.sastScan == 'true' }}
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        # Path to SARIF file relative to the root of the repository
-        sarif_file: workflowengine-results.sarif
+#     - name: Upload SARIF file
+#       if: ${{steps.prescription.outputs.sastScan == 'true' }}
+#       uses: github/codeql-action/upload-sarif@v1
+#       with:
+#         # Path to SARIF file relative to the root of the repository
+#         sarif_file: workflowengine-results.sarif
