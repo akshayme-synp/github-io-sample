@@ -30,7 +30,7 @@ jobs:
     
     - name: Synopsys Intelligent Security Scan
       id: prescription
-      uses: synopsys-sig/intelligent-security-scan@48eedfcd42bc342a294dc495ac452797b2d9ff08
+      uses: akshayme-synp/intelligent-security-scan@try-branch
       with:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
