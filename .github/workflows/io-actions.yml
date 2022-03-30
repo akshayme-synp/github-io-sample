@@ -42,14 +42,17 @@ jobs:
 #         workflowVersion: 2021.12.2
 #         additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
 #         stage: "IO"   
-        
+
+
+
     # Please note that the ID in previous step was set to prescription
     # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
     # is defined in settings
     - name: Static Analysis with Polaris
-#       if: ${{steps.prescription.outputs.sastScan == 'true' }}
-      run: |
-          git diff origin/master HEAD     
+      uses: actions/checkout@v2
+    - run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - run: git diff origin/master HEAD     
     
 #     # Please note that the ID in previous step was set to prescription
 #     # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
