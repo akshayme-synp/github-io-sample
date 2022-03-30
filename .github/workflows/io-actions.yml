@@ -52,7 +52,9 @@ jobs:
       uses: actions/checkout@v2
     - run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-    - run: git diff --name-only origin/master HEAD     
+          git --no-pager diff origin/master --name-only > polaris-files-to-scan.txt
+          echo "Files Changed -->"
+          cat polaris-files-to-scan.txt
     
 #     # Please note that the ID in previous step was set to prescription
 #     # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
