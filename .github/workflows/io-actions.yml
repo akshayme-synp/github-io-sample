@@ -49,9 +49,7 @@ jobs:
     - name: Static Analysis with Polaris
 #       if: ${{steps.prescription.outputs.sastScan == 'true' }}
       run: |
-          git diff --name-only refs/origin/master refs/origin/test > polaris-files-to-scan.txt
-          echo "Files Changed -->"
-          cat polaris-files-to-scan.txt          
+          git --no-pager diff origin/master --name-only         
     
 #     # Please note that the ID in previous step was set to prescription
 #     # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
