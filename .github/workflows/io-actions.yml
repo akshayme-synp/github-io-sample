@@ -3,8 +3,8 @@ name: "Synopsys Intelligent Security Scan"
 on:
   push:
    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
 
 jobs:
   analyze:
@@ -28,20 +28,30 @@ jobs:
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
     
-    - name: Synopsys Intelligent Security Scan
-      id: prescription
-      uses: akshayme-synp/intelligent-security-scan@try-branch
-      env:
-        persona: devsecops
-        release_type: minor
-        manifest_type: json
-      with:
-        ioServerUrl: ${{secrets.IO_SERVER_URL}}
-        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
-        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        workflowVersion: 2021.12.2
-        additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
-        stage: "IO"    
+#     - name: Synopsys Intelligent Security Scan
+#       id: prescription
+#       uses: akshayme-synp/intelligent-security-scan@try-branch
+#       env:
+#         persona: devsecops
+#         release_type: minor
+#         manifest_type: json
+#       with:
+#         ioServerUrl: ${{secrets.IO_SERVER_URL}}
+#         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
+#         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+#         workflowVersion: 2021.12.2
+#         additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
+#         stage: "IO"   
+        
+    # Please note that the ID in previous step was set to prescription
+    # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
+    # is defined in settings
+    - name: Static Analysis with Polaris
+#       if: ${{steps.prescription.outputs.sastScan == 'true' }}
+      run: |
+          git --no-pager diff origin/master --name-only > polaris-files-to-scan.txt
+          echo "Files Changed -->"
+          cat polaris-files-to-scan.txt          
     
 #     # Please note that the ID in previous step was set to prescription
 #     # in order for this logic to work also make sure that POLARIS_ACCESS_TOKEN
@@ -63,24 +73,24 @@ jobs:
 #       with:
 #          args: '--blackduck.url="${{ secrets.BLACKDUCK_URL}}" --blackduck.api.token="${{ secrets.BLACKDUCK_TOKEN}}" --detect.tools="SIGNATURE_SCAN,DETECTOR"'
     
-    - name: Synopsys Intelligent Security Scan
-      if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
-      uses: akshayme-synp/intelligent-security-scan@try-branch
-      env:
-        persona: devsecops
-        release_type: minor
-        manifest_type: json
-      with:
-        ioServerUrl: ${{secrets.IO_SERVER_URL}}
-        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
-        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        workflowVersion: 2021.12.2
-        additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
-        stage: "WORKFLOW"
+#     - name: Synopsys Intelligent Security Scan
+#       if: ${{ steps.prescription.outputs.sastScan == 'true' || steps.prescription.outputs.scaScan == 'true' }}
+#       uses: akshayme-synp/intelligent-security-scan@try-branch
+#       env:
+#         persona: devsecops
+#         release_type: minor
+#         manifest_type: json
+#       with:
+#         ioServerUrl: ${{secrets.IO_SERVER_URL}}
+#         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
+#         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
+#         workflowVersion: 2021.12.2
+#         additionalWorkflowArgs: --slack.channel.id=${{secrets.SLACK_CHANNEL_ID}} --slack.token=${{secrets.SLACK_TOKEN}} --persona=$persona --release.type=$release_type --manifest_type=$manifest_type --github.token=${{secrets.SCM_ACCESS_TOKEN}} --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} --IS_SAST_ENABLED=${{steps.prescription.outputs.sastScan}} --IS_SCA_ENABLED=${{steps.prescription.outputs.scaScan}} --IS_DAST_ENABLED=false
+#         stage: "WORKFLOW"
     
-    - name: Upload SARIF file
-      if: ${{steps.prescription.outputs.sastScan == 'true' }}
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        # Path to SARIF file relative to the root of the repository
-        sarif_file: workflowengine-results.sarif
+#     - name: Upload SARIF file
+#       if: ${{steps.prescription.outputs.sastScan == 'true' }}
+#       uses: github/codeql-action/upload-sarif@v1
+#       with:
+#         # Path to SARIF file relative to the root of the repository
+#         sarif_file: workflowengine-results.sarif
