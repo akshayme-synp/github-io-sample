@@ -49,7 +49,7 @@ jobs:
     - name: Static Analysis with Polaris
 #       if: ${{steps.prescription.outputs.sastScan == 'true' }}
       run: |
-          git --no-pager diff origin/master --name-only > polaris-files-to-scan.txt
+          git diff --name-only origin/master origin/test > polaris-files-to-scan.txt
           echo "Files Changed -->"
           cat polaris-files-to-scan.txt          
     
