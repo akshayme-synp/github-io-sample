@@ -1,6 +1,7 @@
 {
    "application": {
-      "projectName": "<<PROJECT_NAME>>"
+      "projectName": "<<PROJECT_NAME>>",
+      "release": "<<RELEASE_TYPE>>"
    },
    "environment": {
       "scm": "<<SCM_TYPE>>",
