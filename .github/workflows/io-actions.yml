@@ -41,8 +41,7 @@ jobs:
     # is defined in settings
     - name: Incremental Static Analysis with Polaris
       run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-          git --no-pager diff origin/master --name-only > polaris-files-to-scan.txt
+          git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }} > polaris-files-to-scan.txt
           echo "Files Changed -->"
           cat polaris-files-to-scan.txt
           export POLARIS_SERVER_URL=${{ secrets.POLARIS_SERVER_URL}}
