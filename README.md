@@ -1,5 +1,5 @@
 # Github-io-sample
-try something new
+
 ## Sample Configuration files for Synopsys Intelligent Orchestration Scan. 
 
 By default, the io-manifest.yml is download from [here](https://github.com/synopsys-sig/io-artifacts/blob/main/io-manifest.yml)

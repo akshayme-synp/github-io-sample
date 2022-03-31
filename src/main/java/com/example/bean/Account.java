@@ -16,6 +16,7 @@ public class Account {
 
 	public void setUsername(final String username) {
 		this.username = username;
+                System.out.println(username);
 	}
 
 	public String getName() {
