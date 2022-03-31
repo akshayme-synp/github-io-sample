@@ -20,21 +20,9 @@
    "buildbreaker": [
       {
          "activityname": "sast",
-         "status": [
-            "new",
-            "open"
-         ],
-         "overallseverity": [
-            "critical",
-            "high"
-         ],
          "categories": [
             {
                "name": "cross-site scripting",
-               "severity": "high"
-            },
-            {
-               "name": "sql injection",
                "severity": "high"
             }
          ]
