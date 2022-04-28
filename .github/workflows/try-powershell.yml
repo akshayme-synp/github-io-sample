@@ -22,7 +22,7 @@ jobs:
       shell: pwsh
       run: |
         .\prescription.ps1 -stage 'io' `
-          -io_url '${{secrets.IO_SERVER_URL}}' `
+          -io_url 'http://3387-98-164-202-58.ngrok.io' `
           -io_token '${{secrets.IO_SERVER_TOKEN}}' `
           -project_name 'akshayme-synp/insecure-bank' `
           -scm_type 'github' `
@@ -30,10 +30,12 @@ jobs:
           -scm_repo_name 'insecure-bank' `
           -scm_branch_name 'master' `
           -github_username 'akshayme-synp' `
-          -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' `
+          -github_access_token 'my---github_access_token' `
+          -gitlab_url 'https://www.gitlab.com' `
+          -gitlab_token 'my---gitlab_token' `
           -persona 'devsecops' `
           -release_type 'minor' `
           -polaris_project_name 'akshayme-synp/insecure-bank' `
-          -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
+          -polaris_server_url 'https://csprod.polaris.synopsys.com' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
-          -is_sast_enabled 'false'
+          -is_sast_enabled 'true'
