@@ -31,7 +31,7 @@ jobs:
           -scm_branch_name 'master' `
           -github_username 'akshayme-synp' `
           -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' `
-          -persona 'developer' `
+          -persona 'devsecops' `
           -release_type 'minor' `
           -polaris_project_name 'akshayme-synp/insecure-bank' `
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
