@@ -36,6 +36,6 @@ jobs:
           -persona 'devsecops' `
           -release_type 'minor' `
           -polaris_project_name 'akshayme-synp/insecure-bank' `
-          -polaris_server_url 'https://csprod.polaris.synopsys.com' `
+          -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
