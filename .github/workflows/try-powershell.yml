@@ -30,7 +30,9 @@ jobs:
           -scm_repo_name 'insecure-bank' `
           -scm_branch_name 'master' `
           -github_username 'akshayme-synp' `
-          -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' `      
+          -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' `
+          -gitlab_url 'https://www.gitlab.com' `
+          -gitlab_token '' `
           -persona 'devsecops' `
           -release_type 'minor' `
           -polaris_project_name 'akshayme-synp/insecure-bank' `
