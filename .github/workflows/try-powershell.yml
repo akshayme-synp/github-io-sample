@@ -33,7 +33,7 @@ jobs:
           -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' `
           -gitlab_url 'https://www.gitlab.com' `
           -gitlab_token '' `
-          -persona 'devsecops' `
+          -persona 'developer' `
           -release_type 'minor' `
           -polaris_project_name 'akshayme-synp/insecure-bank' `
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
