@@ -22,7 +22,7 @@ jobs:
       shell: pwsh
       run: |
         .\prescription.ps1 -stage 'io' `
-          -io_url 'http://3387-98-164-202-58.ngrok.io' `
+          -io_url '${{secrets.IO_SERVER_URL}}' `
           -io_token '${{secrets.IO_SERVER_TOKEN}}' `
           -project_name 'akshayme-synp/insecure-bank' `
           -scm_type 'github' `
