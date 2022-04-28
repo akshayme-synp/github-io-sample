@@ -290,6 +290,9 @@ function getIOPrescription {
     
     $ResponseBody = $Response.Content    
     Write-Host $ResponseBody
+    
+    $isSastEnabled = $ResponseBody.security.activities.sast.enabled
+    Write-Host "isSastEnabled: ${isSastEnabled}"
 
     $StatusCode = $Response.StatusCode
     if($StatusCode -ne 200 -And $StatusCode -ne 201) {
