@@ -291,7 +291,9 @@ function getIOPrescription {
     $ResponseBody = $Response.Content    
     Write-Host $ResponseBody
     
-    $isSastEnabled = $ResponseBody.security.activities.sast.enabled
+    $ResponseBodyJSON = ConvertFrom-Json $ResponseBody
+    
+    $isSastEnabled = $ResponseBodyJSON.security.activities.sast.enabled
     Write-Host "isSastEnabled: ${isSastEnabled}"
 
     $StatusCode = $Response.StatusCode
