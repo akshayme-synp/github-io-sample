@@ -291,14 +291,19 @@ function getIOPrescription {
     $ResponseBody = $Response.Content    
     Write-Host $ResponseBody
     
-    $ResponseBodyJSON = ConvertFrom-Json $ResponseBody
-    
-    $isSastEnabled = $ResponseBodyJSON.security.activities.sast.enabled
-    Write-Host "isSastEnabled: ${isSastEnabled}"
-
     $StatusCode = $Response.StatusCode
     if($StatusCode -ne 200 -And $StatusCode -ne 201) {
         Write-Error "Error: API $url returned ${StatusCode}" -ErrorAction Stop
+    }
+    
+    $ResponseBodyJSON = ConvertFrom-Json $ResponseBody
+    $isSastEnabled = $ResponseBodyJSON.security.activities.sast.enabled
+    Write-Host "isSastEnabled: ${isSastEnabled}"
+    
+    if($isSastEnabled -eq $true) {
+        Write-Host "Run polaris"
+    } else {
+        Write-Host "Don't run polaris"
     }
 }
 
