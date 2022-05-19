@@ -44,4 +44,4 @@ jobs:
           
     - name: Check outputs
       shell: pwsh
-      run: echo env.MY_VARIABLE
+      run: env.MY_VARIABLE
