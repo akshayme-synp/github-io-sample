@@ -28,7 +28,7 @@ jobs:
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
         workflowVersion: 2021.12.2
-        additionalWorkflowArgs: -persona '$persona' -release_type '$release_type' -github.token '${{secrets.SCM_ACCESS_TOKEN}}' -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}'
+        additionalWorkflowArgs: -persona '$persona' -release_type '$release_type' -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}'
         stage: "io"
         
     - name: Run powershell
