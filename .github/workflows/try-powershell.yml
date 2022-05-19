@@ -41,12 +41,8 @@ jobs:
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
         echo "::set-output name=is_Sast_Enabled::$isSastEnabled"
-        if($is_Sast_Enabled -eq $true) {
-            Write-Host "Run polaris..."
-        } else {
-            Write-Host "Don't run polaris..."
-        }
+        Write-Host  "is_Sast_Enabled: ${is_Sast_Enabled}"
           
     - name: Check outputs
       shell: pwsh
-      run: echo ${{ steps.prescription.outputs.$is_Sast_Enabled }}
+      run: echo ${{ steps.prescription.outputs.is_Sast_Enabled }}
