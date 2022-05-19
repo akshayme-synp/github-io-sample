@@ -40,8 +40,10 @@ jobs:
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
-        get-content result.json
+        $jsonRes = Get-Content result.json | ConvertFrom-Json
+        $is_Sast_Enabled_new = $jsonRes.security.activities.sast.enabled
+        echo "::set-output name=is_Sast_Enabled_NEW::$is_Sast_Enabled_new"
 
     - name: Check outputs
       shell: pwsh
-      run: echo ${{ steps.prescription.outputs.is_Sast_Enabled }}
+      run: echo ${{ steps.prescription.outputs.is_Sast_Enabled_NEW }}
