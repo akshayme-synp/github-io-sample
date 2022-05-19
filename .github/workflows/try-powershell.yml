@@ -18,19 +18,6 @@ jobs:
       with:
         fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
         
-    - name: Synopsys Intelligent Security Scan
-      uses: akshayme-synp/intelligent-security-scan@try-powershell
-      env:
-        persona: devsecops
-        release_type: minor
-      with:
-        ioServerUrl: ${{secrets.IO_SERVER_URL}}
-        ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
-        workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        workflowVersion: 2021.12.2
-        additionalWorkflowArgs: -persona '$persona' -release_type '$release_type' -github_access_token '${{secrets.SCM_ACCESS_TOKEN}}' -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}'
-        stage: "io"
-        
     - name: Run powershell
       shell: pwsh
       id: prescription
