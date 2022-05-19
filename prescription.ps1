@@ -40,7 +40,7 @@ param(
     [string]$workflow_version,
 
     [Parameter()]
-    [string]$persona="developer",
+    [string]$persona,
 
     [Parameter()]
     [string]$configFile="io-manifest.json",
@@ -49,7 +49,7 @@ param(
     [string]$project_name,
 
     [Parameter()]
-    [string]$release_type="major",
+    [string]$release_type,
 
     [Parameter()]
     [string]$slack_channel_id,
