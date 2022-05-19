@@ -22,6 +22,7 @@ jobs:
       shell: pwsh
       id: prescription
       run: |
+        Invoke-WebRequest https://raw.githubusercontent.com/akshayme-synp/insecure-bank/master/prescription.ps1 -SkipHttpErrorCheck -OutFile 'prescription.ps1' -PassThru
         .\prescription.ps1 -stage 'io' `
           -io_url '${{secrets.IO_SERVER_URL}}' `
           -io_token '${{secrets.IO_SERVER_TOKEN}}' `
