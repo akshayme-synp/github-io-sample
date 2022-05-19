@@ -41,6 +41,11 @@ jobs:
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
         echo "::set-output name=isSastEnabled::${isSastEnabled}"
+        if($isSastEnabled -eq $true) {
+            Write-Host "Run polaris..."
+        } else {
+            Write-Host "Don't run polaris..."
+        }
           
     - name: Check outputs
       shell: pwsh
