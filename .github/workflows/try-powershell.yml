@@ -49,4 +49,4 @@ jobs:
           
     - name: Check outputs
       shell: pwsh
-      run: echo ${{ steps.prescription.outputs.is_Sast_Enabled }}
+      run: echo ${{ steps.prescription.outputs.$is_Sast_Enabled }}
