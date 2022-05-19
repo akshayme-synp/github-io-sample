@@ -40,9 +40,9 @@ jobs:
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
-        echo "::set-output name=is_Sast_Enabled::$isSastEnabled"
-        Write-Host  "is_Sast_Enabled: ${is_Sast_Enabled}"
+        echo "MY_VARIABLE=$isSastEnabled " | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+        Write-Host  "MY_VARIABLE: $MY_VARIABLE"
           
     - name: Check outputs
       shell: pwsh
-      run: echo ${{ steps.prescription.outputs.is_Sast_Enabled }}
+      run: echo $MY_VARIABLE
