@@ -300,8 +300,6 @@ function getIOPrescription {
     $isSastEnabled = $ResponseBodyJSON.security.activities.sast.enabled
     Write-Host "isSastEnabled: ${isSastEnabled}"
     
-    echo "::set-output name=is_Sast_Enabled::$isSastEnabled"
-    
     if($isSastEnabled -eq $true) {
         Write-Host "Run polaris"
     } else {
