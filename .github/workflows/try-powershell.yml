@@ -40,8 +40,5 @@ jobs:
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
-        echo "MY_VARIABLE=false" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
-          
-    - name: Check outputs
-      shell: pwsh
-      run: env.MY_VARIABLE
+        Write-Host "isSastEnabled: ${isSastEnabled}"
+
