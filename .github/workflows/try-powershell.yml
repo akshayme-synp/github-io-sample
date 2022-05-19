@@ -40,7 +40,7 @@ jobs:
           -polaris_server_url '${{secrets.POLARIS_SERVER_URL}}' `
           -polaris_access_token '${{secrets.POLARIS_ACCESS_TOKEN}}' `
           -is_sast_enabled 'true'
-        echo "::set-output name=is_Sast_Enabled::{isSastEnabled}"        
+        echo "::set-output name=is_Sast_Enabled::${isSastEnabled}"        
           
     - name: Check outputs
       shell: pwsh
