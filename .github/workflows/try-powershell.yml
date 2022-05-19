@@ -42,3 +42,6 @@ jobs:
           -is_sast_enabled 'true'
         Write-Host "isSastEnabled: ${isSastEnabled}"
 
+    - name: Check outputs
+      shell: pwsh
+      run: echo ${{ steps.vars.outputs.is_Sast_Enabled }}
