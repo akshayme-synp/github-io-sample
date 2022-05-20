@@ -61,4 +61,5 @@ jobs:
           export POLARIS_FF_ENABLE_COVERITY_INCREMENTAL=true
           wget -q ${{ secrets.POLARIS_SERVER_URL}}/api/tools/polaris_cli-linux64.zip
           unzip -j polaris_cli-linux64.zip -d /tmp
-          /tmp/polaris analyze -w --incremental polaris-files-to-scan.txt
+          # /tmp/polaris analyze -w --incremental polaris-files-to-scan.txt
+          /tmp/polaris analyze -w
